@@ -2,6 +2,7 @@ package sample;
 
 
 import javafx.scene.control.Label;
+import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -114,6 +115,17 @@ public class ImageProcessor {
         Main.redMedianLabel = new Label("Медиана = " + redMedian);
         Main.greenMedianLabel = new Label("Медиана = " + greenMedian);
         Main.blueMedianLabel = new Label("Медиана = " + blueMedian);
+
+        double generalCorrelation = ImageProcessor.calculatePearsonCorreleation(generalPixelDistributionArray);
+        double redCorrelation = ImageProcessor.calculatePearsonCorreleation(redPixelDistributionArray);
+        double greenCorrelation = ImageProcessor.calculatePearsonCorreleation(greenPixelDistributionArray);
+        double blueCorrelation = ImageProcessor.calculatePearsonCorreleation(bluePixelDistributionArray);
+
+        Main.generalCorrelationLabel = new Label("Коэффициент Корреляции = " + generalCorrelation);
+        Main.redCorrelationLabel = new Label("Коэффициент Корреляции(R) = " + redCorrelation);
+        Main.greenCorrelationLabel = new Label("Коэффициент Корреляции(G) = " + greenCorrelation);
+        Main.blueCorrelationLabel = new Label("Коэффициент Корреляции(B) = " + blueCorrelation);
+
     }
 
     public static int calculateMathematicalExpectation(int[] sourceArray, int imageHeight, int imageWidth) {
@@ -170,6 +182,18 @@ public class ImageProcessor {
         delta = average - tempSum;
 
         return (medianIndex*10 +  delta*10 / sourceArray[medianIndex]);
+    }
+
+    public static double calculatePearsonCorreleation(int[] sourceArray) {
+        double[] x = new double[sourceArray.length];
+        double[] y = new double[sourceArray.length];
+        for(int i = 0; i < sourceArray.length; ++i) {
+            x[i] = i + 1;
+            y[i] = sourceArray[i];
+        }
+
+
+        return new PearsonsCorrelation().correlation(x,y);
     }
 
 }

@@ -43,6 +43,11 @@ public class Main extends Application {
     public static Label greenMedianLabel;
     public static Label blueMedianLabel;
 
+    public static Label generalCorrelationLabel;
+    public static Label redCorrelationLabel;
+    public static Label greenCorrelationLabel;
+    public static Label blueCorrelationLabel;
+
     @Override
     public void start(Stage primaryStage) throws Exception{
         ImageProcessor.grayScaleTransform("src/sample/romashki.jpg");
@@ -95,6 +100,11 @@ public class Main extends Application {
         greenMedianLabel.setStyle("-fx-font-weight: bold");
         blueMedianLabel.setStyle("-fx-font-weight: bold");
 
+        generalCorrelationLabel.setStyle("-fx-font-weight: bold");
+        redCorrelationLabel.setStyle("-fx-font-weight: bold");
+        greenCorrelationLabel.setStyle("-fx-font-weight: bold");
+        blueCorrelationLabel.setStyle("-fx-font-weight: bold");
+
 
         Image primaryImage = new Image(primaryImageFileStream);
         ImageView primaryImageView = new ImageView(primaryImage);
@@ -107,7 +117,7 @@ public class Main extends Application {
         outputImageView.setFitHeight(300);
 
 
-        VBox valuesVBox = new VBox(200);
+        VBox valuesVBox = new VBox(150);
         VBox generalValuesVBox = new VBox(10);
         VBox redValuesVBox = new VBox(10);
         VBox greenValuesVBox = new VBox(10);
@@ -130,10 +140,10 @@ public class Main extends Application {
         outputImageBox.getChildren().addAll(outputImageView, outputImageText);
         imagesVBox.getChildren().addAll(primaryImageBox, outputImageBox);
 
-        generalValuesVBox.getChildren().addAll(generalMELabel, generalRMSLabel, generalModaLabel, generalMedianLabel);
-        redValuesVBox.getChildren().addAll(redMELabel, redRMSLabel, redModaLabel, redMedianLabel);
-        greenValuesVBox.getChildren().addAll(greenMELabel, greenRMSLabel, greenModaLabel, greenMedianLabel);
-        blueValuesVBox.getChildren().addAll(blueMELabel, blueRMSLabel, blueModaLabel, blueMedianLabel);
+        generalValuesVBox.getChildren().addAll(generalMELabel, generalRMSLabel, generalModaLabel, generalMedianLabel, generalCorrelationLabel);
+        redValuesVBox.getChildren().addAll(redMELabel, redRMSLabel, redModaLabel, redMedianLabel, redCorrelationLabel);
+        greenValuesVBox.getChildren().addAll(greenMELabel, greenRMSLabel, greenModaLabel, greenMedianLabel, greenCorrelationLabel);
+        blueValuesVBox.getChildren().addAll(blueMELabel, blueRMSLabel, blueModaLabel, blueMedianLabel, blueCorrelationLabel);
         valuesVBox.getChildren().addAll(generalValuesVBox, redValuesVBox,greenValuesVBox,blueValuesVBox);
 
         histogramsVBox.getChildren().addAll(generalHistogram, redHistogram, greenHistogram, blueHistogram);
