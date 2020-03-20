@@ -8,9 +8,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class ImageProcessor {
 
@@ -39,7 +36,7 @@ public class ImageProcessor {
                 sourceImage.setRGB(j, i, pixel);
             }
 
-        File outputFile = new File("F:\\Code\\labsIIPY\\SA3\\src\\sample\\grayscaled.jpg");
+        File outputFile = new File("src/sample/grayscaled.jpg");
         ImageIO.write(sourceImage, "jpg", outputFile);
     }
 
@@ -78,11 +75,45 @@ public class ImageProcessor {
         Main.greenHistogram = HistogramInitializer.initializeHistogram(greenPixelDistributionArray);
         Main.blueHistogram = HistogramInitializer.initializeHistogram(bluePixelDistributionArray);
 
-        Main.generalMELabel = new Label("Общее МО = " + ImageProcessor.calculateMathematicalExpectation(generalPixelDistributionArray, imageHeight, imageWidth));
-        Main.redMELabel = new Label("Красный МО = " + ImageProcessor.calculateMathematicalExpectation(redPixelDistributionArray, imageHeight, imageWidth));
-        Main.greenMELabel = new Label("Зеленый МО = " + ImageProcessor.calculateMathematicalExpectation(greenPixelDistributionArray, imageHeight, imageWidth));
-        Main.blueMELabel = new Label("Голубой МО = " + ImageProcessor.calculateMathematicalExpectation(bluePixelDistributionArray, imageHeight, imageWidth));
+        int generalME = ImageProcessor.calculateMathematicalExpectation(generalPixelDistributionArray, imageHeight, imageWidth);
+        int redME = ImageProcessor.calculateMathematicalExpectation(redPixelDistributionArray, imageHeight, imageWidth);
+        int greenME = ImageProcessor.calculateMathematicalExpectation(greenPixelDistributionArray, imageHeight, imageWidth);
+        int blueME = ImageProcessor.calculateMathematicalExpectation(bluePixelDistributionArray, imageHeight, imageWidth);
 
+        Main.generalMELabel = new Label("Выборочное среднее = " + generalME);
+        Main.redMELabel = new Label("Выборочное среднее(R) = " + redME);
+        Main.greenMELabel = new Label("Выборочное среднее(G) = " + greenME);
+        Main.blueMELabel = new Label("Выборочное среднее(B) = " + blueME);
+
+        int generalRMS =  ImageProcessor.calculateRootMeanSquare(generalPixelDistributionArray, generalME, imageWidth, imageHeight*255);
+        int redRMS = ImageProcessor.calculateRootMeanSquare(redPixelDistributionArray, redME, imageWidth, imageHeight*255);
+        int greenRMS = ImageProcessor.calculateRootMeanSquare(greenPixelDistributionArray, greenME, imageWidth, imageHeight*255);
+        int blueRMS = ImageProcessor.calculateRootMeanSquare(bluePixelDistributionArray, blueME, imageWidth, imageHeight*255);
+
+        Main.generalRMSLabel = new Label("Среднее квадратическое отклонение = " + generalRMS);
+        Main.redRMSLabel = new Label("Среднее квадратическое отклонение(R) = " + redRMS);
+        Main.greenRMSLabel = new Label("Среднее квадратическое отклонение(G) = " + greenRMS);
+        Main.blueRMSLabel = new Label("Среднее квадратическое отклонение(B) = " + blueRMS);
+
+        int generalModa = ImageProcessor.calculateModa(generalPixelDistributionArray, imageWidth, imageHeight);
+        int redModa = ImageProcessor.calculateModa(redPixelDistributionArray, imageWidth, imageHeight);
+        int greenModa = ImageProcessor.calculateModa(greenPixelDistributionArray, imageWidth, imageHeight);
+        int blueModa = ImageProcessor.calculateModa(bluePixelDistributionArray, imageWidth, imageHeight);
+
+        Main.generalModaLabel = new Label("Мода = " + generalModa);
+        Main.redModaLabel = new Label("Мода(R) = " + redModa);
+        Main.greenModaLabel = new Label("Мода(G) = " + greenModa);
+        Main.blueModaLabel = new Label("Мода(B) = " + blueModa);
+
+        int generalMedian = ImageProcessor.calculateMedian(generalPixelDistributionArray, imageWidth, imageHeight);
+        int redMedian = ImageProcessor.calculateMedian(redPixelDistributionArray, imageWidth, imageHeight);
+        int greenMedian = ImageProcessor.calculateMedian(greenPixelDistributionArray, imageWidth, imageHeight);
+        int blueMedian = ImageProcessor.calculateMedian(bluePixelDistributionArray, imageWidth, imageHeight);
+
+        Main.generalMedianLabel = new Label("Медиана = " + generalMedian);
+        Main.redMedianLabel = new Label("Медиана = " + redMedian);
+        Main.greenMedianLabel = new Label("Медиана = " + greenMedian);
+        Main.blueMedianLabel = new Label("Медиана = " + blueMedian);
     }
 
     public static int calculateMathematicalExpectation(int[] sourceArray, int imageHeight, int imageWidth) {
@@ -95,6 +126,50 @@ public class ImageProcessor {
         System.out.println(mathematicalExpectation);
         mathematicalExpectation /= imageWidth*imageHeight;
         return (int) mathematicalExpectation;
+    }
+
+    public static int calculateRootMeanSquare(int[] sourceArray, int mathematicalExpectation, int imageWidth, int imageHeight) {
+        double rootMeanSquare = 0;
+        int arraySize = sourceArray.length;
+        for(int i = 0; i < arraySize; ++i) {
+            rootMeanSquare += Math.pow((sourceArray[i] - mathematicalExpectation), 2);
+        }
+        rootMeanSquare /= imageWidth*imageHeight;
+        return (int) Math.sqrt(rootMeanSquare);
+    }
+
+    public static int calculateModa(int[] sourceArray, int imageWidth, int imageHeight) {
+        int maximumFreqValue = 0;
+        int modaIndex = 0;
+
+        for(int i = 0; i < sourceArray.length; ++i) {
+            if(sourceArray[i] > maximumFreqValue) {
+                maximumFreqValue = sourceArray[i];
+                modaIndex = i;
+            }
+        }
+        return (modaIndex)*10 + (int) (Math.random() * 10);
+    }
+
+    public static int calculateMedian(int[] sourceArray, int imageWidth, int imageHeight) {
+        int tempSum = 0;
+        int arraySize = sourceArray.length;
+        int average = imageHeight * imageWidth / 2;
+        int delta;
+        int medianIndex = 0;
+        int lowerboundary = 0;
+
+        for(int i = 0; i < arraySize; ++i) {
+            tempSum += sourceArray[i];
+            if(tempSum >= average) {
+                medianIndex = i;
+                break;
+            }
+        }
+        tempSum -= sourceArray[medianIndex];
+        delta = average - tempSum;
+
+        return (medianIndex*10 +  delta*10 / sourceArray[medianIndex]);
     }
 
 }

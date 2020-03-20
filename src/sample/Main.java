@@ -1,10 +1,8 @@
 package sample;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.Label;
@@ -30,13 +28,28 @@ public class Main extends Application {
     public static Label greenMELabel;
     public static Label blueMELabel;
 
+    public static Label generalRMSLabel;
+    public static Label redRMSLabel;
+    public static Label greenRMSLabel;
+    public static Label blueRMSLabel;
+
+    public static Label generalModaLabel;
+    public static Label redModaLabel;
+    public static Label greenModaLabel;
+    public static Label blueModaLabel;
+
+    public static Label generalMedianLabel;
+    public static Label redMedianLabel;
+    public static Label greenMedianLabel;
+    public static Label blueMedianLabel;
+
     @Override
     public void start(Stage primaryStage) throws Exception{
-        ImageProcessor.grayScaleTransform("F:\\Code\\labsIIPY\\SA3\\src\\sample\\romashki.jpg");
-        ImageProcessor.getDistributionArray("F:\\Code\\labsIIPY\\SA3\\src\\sample\\romashki.jpg");
+        ImageProcessor.grayScaleTransform("src/sample/romashki.jpg");
+        ImageProcessor.getDistributionArray("src/sample/romashki.jpg");
 
-        FileInputStream primaryImageFileStream = new FileInputStream("F:\\Code\\labsIIPY\\SA3\\src\\sample\\romashki.jpg");
-        FileInputStream outputImageFileStream = new FileInputStream("F:\\Code\\labsIIPY\\SA3\\src\\sample\\grayscaled.jpg");
+        FileInputStream primaryImageFileStream = new FileInputStream("src/sample/romashki.jpg");
+        FileInputStream outputImageFileStream = new FileInputStream("src/sample/grayscaled.jpg");
         Text primaryImageText = new Text("Оригинал");
         Text outputImageText = new Text("Черно-белое");
         primaryImageText.setFont(new Font(20));
@@ -47,15 +60,41 @@ public class Main extends Application {
         greenHistogram.setCreateSymbols(false);
         blueHistogram.setCreateSymbols(false);
 
-        generalHistogram.setTitle("Гистограмма изображения");
-        redHistogram.setTitle("Гистограмма красной составляющей");
-        greenHistogram.setTitle("Гистограмма зеленой составляющей");
-        blueHistogram.setTitle("Гистограмма голубой составляющей");
+        generalHistogram.setTitle("Гистограмма");
+        redHistogram.setTitle("Гистограмма(R)");
+        greenHistogram.setTitle("Гистограмма(G)");
+        blueHistogram.setTitle("Гистограмма(B)");
 
-        generalHistogram.setMinSize(600,200);
-        redHistogram.setMinSize(600,200);
-        greenHistogram.setMinSize(600, 200);
-        blueHistogram.setMinSize(600, 200);
+        generalHistogram.setMinSize(800,200);
+        redHistogram.setMinSize(800,200);
+        greenHistogram.setMinSize(800, 200);
+        blueHistogram.setMinSize(800, 200);
+
+        generalMELabel.setFont(new Font(14));
+        redMELabel.setFont(new Font(14));
+        greenMELabel.setFont(new Font(14));
+        blueMELabel.setFont(new Font(14));
+
+        generalMELabel.setStyle("-fx-font-weight: bold");
+        redMELabel.setStyle("-fx-font-weight: bold");
+        greenMELabel.setStyle("-fx-font-weight: bold");
+        blueMELabel.setStyle("-fx-font-weight: bold");
+
+        generalRMSLabel.setStyle("-fx-font-weight: bold");
+        redRMSLabel.setStyle("-fx-font-weight: bold");
+        greenRMSLabel.setStyle("-fx-font-weight: bold");
+        blueRMSLabel.setStyle("-fx-font-weight: bold");
+
+        generalModaLabel.setStyle("-fx-font-weight: bold");
+        redModaLabel.setStyle("-fx-font-weight: bold");
+        greenModaLabel.setStyle("-fx-font-weight: bold");
+        blueModaLabel.setStyle("-fx-font-weight: bold");
+
+        generalMedianLabel.setStyle("-fx-font-weight: bold");
+        redMedianLabel.setStyle("-fx-font-weight: bold");
+        greenMedianLabel.setStyle("-fx-font-weight: bold");
+        blueMedianLabel.setStyle("-fx-font-weight: bold");
+
 
         Image primaryImage = new Image(primaryImageFileStream);
         ImageView primaryImageView = new ImageView(primaryImage);
@@ -68,7 +107,7 @@ public class Main extends Application {
         outputImageView.setFitHeight(300);
 
 
-        VBox valuesVBox = new VBox(50);
+        VBox valuesVBox = new VBox(200);
         VBox generalValuesVBox = new VBox(10);
         VBox redValuesVBox = new VBox(10);
         VBox greenValuesVBox = new VBox(10);
@@ -78,11 +117,12 @@ public class Main extends Application {
         VBox outputImageBox = new VBox(10);
         VBox imagesVBox = new VBox(50);
         VBox histogramsVBox = new VBox(30);
-        HBox mainLayout = new HBox(50);
+        HBox mainLayout = new HBox(100);
 
 
         primaryImageBox.setAlignment(Pos.CENTER);
         outputImageBox.setAlignment(Pos.CENTER);
+        mainLayout.setAlignment(Pos.CENTER);
 
         mainLayout.setPadding(new Insets(30,30,30,30));
 
@@ -90,10 +130,10 @@ public class Main extends Application {
         outputImageBox.getChildren().addAll(outputImageView, outputImageText);
         imagesVBox.getChildren().addAll(primaryImageBox, outputImageBox);
 
-        generalValuesVBox.getChildren().addAll(generalMELabel);
-        redValuesVBox.getChildren().addAll(redMELabel);
-        greenValuesVBox.getChildren().addAll(greenMELabel);
-        blueValuesVBox.getChildren().addAll(blueMELabel);
+        generalValuesVBox.getChildren().addAll(generalMELabel, generalRMSLabel, generalModaLabel, generalMedianLabel);
+        redValuesVBox.getChildren().addAll(redMELabel, redRMSLabel, redModaLabel, redMedianLabel);
+        greenValuesVBox.getChildren().addAll(greenMELabel, greenRMSLabel, greenModaLabel, greenMedianLabel);
+        blueValuesVBox.getChildren().addAll(blueMELabel, blueRMSLabel, blueModaLabel, blueMedianLabel);
         valuesVBox.getChildren().addAll(generalValuesVBox, redValuesVBox,greenValuesVBox,blueValuesVBox);
 
         histogramsVBox.getChildren().addAll(generalHistogram, redHistogram, greenHistogram, blueHistogram);

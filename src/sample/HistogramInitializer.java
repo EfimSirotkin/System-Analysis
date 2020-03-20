@@ -19,7 +19,6 @@ public class HistogramInitializer {
         categoriesList.addAll(Arrays.asList(categories));
 
         final CategoryAxis xAxis = new CategoryAxis();
-        //xAxis.setCategories(FXCollections.<String>observableArrayList(categoriesList));
         xAxis.setLabel("Интервалы яркости");
 
         NumberAxis yAxis = new NumberAxis();
